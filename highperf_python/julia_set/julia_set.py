@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 import time
 x1, x2, y1, y2 = -1.8, 1.8, -1.8, 1.8
@@ -31,7 +32,7 @@ def calc_pure_python(desired_width, max_iterations):
 
 
 def calculate_z_serial_purepython(maxiter, zs, cs):
-    output = [0] + len(zs)
+    output = [0] * len(zs)
     for i in range(len(zs)):
         n = 0
         z = zs[i]
