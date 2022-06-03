@@ -41,4 +41,5 @@ def get_test_data():
 
 
 data = get_test_data()
-data.singlepanelplot(trials=0, toilim=[0, 0.5])
+#data.singlepanelplot(trials=0, toilim=[0, 0.5])
+fft_spectra = spy.freqanalysis(data, method='mtmfft', foilim=[0, 60], tapsmofrq=1)
