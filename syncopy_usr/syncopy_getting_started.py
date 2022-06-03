@@ -41,5 +41,16 @@ def get_test_data():
 
 
 data = get_test_data()
-#data.singlepanelplot(trials=0, toilim=[0, 0.5])
+#data.singlepanelplot(trials=0, toilim=[0, 0.5])    # Plot data
+
+## Perform Multitapered Fourier Analysis
 fft_spectra = spy.freqanalysis(data, method='mtmfft', foilim=[0, 60], tapsmofrq=1)
+
+## Perform Wavelet Analysis, requires cluster/SLURM for parallel=TRUE
+fois = np.arange(10, 60, step=2) # frequencies to scan, 2Hz stepping
+wav_spectra = spy.freqanalysis(data,
+                               method='wavelet',
+                               foi=fois,
+                               parallel=True,
+                               keeptrials=False)
+
