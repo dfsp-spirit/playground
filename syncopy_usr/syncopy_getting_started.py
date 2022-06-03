@@ -1,7 +1,15 @@
+# This follows the syncopy quickstart guide
+# at https://syncopy.readthedocs.io/en/dev/quickstart/quickstart.html
+
 import numpy as np
 import syncopy as spy
 
 def get_test_data():
+    """Get synthetic syncopy data
+
+    Returns:
+        syncopy.AnalogData: the generated data
+    """
     nTrials = 50
     nSamples = 1000
     nChannels = 2
@@ -33,3 +41,4 @@ def get_test_data():
 
 
 data = get_test_data()
+#data.singlepanelplot(trials=0, toilim=[0, 0.5])
