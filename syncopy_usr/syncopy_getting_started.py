@@ -41,4 +41,4 @@ def get_test_data():
 
 
 data = get_test_data()
-#data.singlepanelplot(trials=0, toilim=[0, 0.5])
+data.singlepanelplot(trials=0, toilim=[0, 0.5])
