@@ -45,6 +45,7 @@ data = get_test_data()
 
 ## Perform Multitapered Fourier Analysis
 fft_spectra = spy.freqanalysis(data, method='mtmfft', foilim=[0, 60], tapsmofrq=1)
+fft_spectra.singlepanelplot(trials=3) # Plot results
 
 ## Perform Wavelet Analysis
 fois = np.arange(10, 60, step=2) # frequencies to scan, 2Hz stepping
@@ -53,4 +54,7 @@ wav_spectra = spy.freqanalysis(data,
                                foi=fois,
                                parallel=True, # requires cluster/SLURM for parallel=TRUE
                                keeptrials=False)
+wav_spectra.multipanelplot()  # Plot results
+
+
 
