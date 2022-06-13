@@ -8,6 +8,8 @@
 # I would recommend cloning the ESI 'syncopy' environment and starting from
 # there.
 
+# %%
+
 import numpy as np
 import syncopy as spy
 
@@ -132,7 +134,19 @@ def connectivity_analysis():
 
     data = synth_data.AR2_network(nTrials, samplerate=500, AdjMat=AdjMat, nSamples=nSamples)
     spec = spy.freqanalysis(data, tapsmofrq=3, keeptrials=False)
+    # show oscillations
+    data.singlepanelplot(trials=0, toilim=[0, 0.5])
+    spec.singlepanelplot() # better visable in spectra
 
+    # --- coherence -----
+    # investigate channel relationships via coherence.
+    coherence = spy.connectivityanalysis(data, method='coh', tapsmofrq=3)
+    
+    # visualize 2 (arbitrary) channel combinations from the result.
+    # note that coherence is symmetric, so we only show one of the (identical)
+    # plots here
+    coherence.singlepanelplot(channel_i='channel1', channel_j='channel2')
+    #coherence.singlepanelplot(channel_i='channel2', channel_j='channel1')
 
 
 
@@ -140,3 +154,6 @@ if __name__ == "__main__":
     #perform_freq_analysis()
     #dataset_arithmetic_and_preprocessing()
     connectivity_analysis()
+
+
+# %%
