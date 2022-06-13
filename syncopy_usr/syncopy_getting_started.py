@@ -109,7 +109,27 @@ def dataset_arithmetic_and_preprocessing():
     spec_pp.singlepanelplot()
 
 
+def connectivity_analysis():
+    from syncopy.tests import synth_data
+
+    # -----prepare data-----
+    # we create two coupled autoregressive processes of order 2:
+    nTrials = 50
+    nSamples = 1500
+
+    # 2x2 Adjacency matrix to define coupling
+    AdjMat = np.zeros((2, 2))
+    # coupling 0 -> 1
+    AdjMat[0, 1] = 0.2
+
+
+    data = synth_data.AR2_network(nTrials, samplerate=500, AdjMat=AdjMat, nSamples=nSamples)
+    spec = spy.freqanalysis(data, tapsmofrq=3, keeptrials=False)
+
+
+
 
 if __name__ == "__main__":
     #perform_freq_analysis()
-    dataset_arithmetic_and_preprocessing()
+    #dataset_arithmetic_and_preprocessing()
+    connectivity_analysis()
