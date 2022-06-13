@@ -170,6 +170,11 @@ def connectivity_analysis():
     # Granger causality also uses trial averaging, so we cannot look
     # at individual channels.
 
+    # --- Save some data for inspection in HDF5 viewer ----
+    import os
+    from pathlib import Path
+    spy.save(data, container = os.path.join(Path.home(), "spy_test"))
+
 
 
 if __name__ == "__main__":
