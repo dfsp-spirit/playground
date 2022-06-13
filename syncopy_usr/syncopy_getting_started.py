@@ -1,5 +1,12 @@
 # This follows the syncopy quickstart guide
 # at https://syncopy.readthedocs.io/en/dev/quickstart/quickstart.html
+#
+# Note that as of 2022-06, this tutorial requires the dev version of
+# syncopy, which you need to install by cloning the GitHub repo and then
+# installing it with `pip install -e .` into the conda environment you use.
+#
+# I would recommend cloning the ESI 'syncopy' environment and starting from
+# there.
 
 import numpy as np
 import syncopy as spy
