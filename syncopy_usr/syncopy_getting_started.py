@@ -139,14 +139,25 @@ def connectivity_analysis():
     spec.singlepanelplot() # better visable in spectra
 
     # --- coherence -----
-    # investigate channel relationships via coherence.
+    # investigate channel relationships via coherence, based on spectra.
     coherence = spy.connectivityanalysis(data, method='coh', tapsmofrq=3)
     
-    # visualize 2 (arbitrary) channel combinations from the result.
+    # visualize 2 (arbitrary) channel combinations from the result (we only have
+    #  2 channels here, so it is actually the only one in this case).
     # note that coherence is symmetric, so we only show one of the (identical)
     # plots here
     coherence.singlepanelplot(channel_i='channel1', channel_j='channel2')
     #coherence.singlepanelplot(channel_i='channel2', channel_j='channel1')
+
+    # --- cross correlation ---
+    # now we look for channel relations in time-domain, using cross corr.
+    corr = spy.connectivityanalysis(data, method='corr', keeptrials=True)
+    # we look for 2 different trials here
+    corr.singlepanelplot(channel_i=0, channel_j=1, trials=0)
+    corr.singlepanelplot(channel_i=0, channel_j=1, trials=1)
+    # note that there are correlations also for longer lags.
+
+    # --- Granger causality ---
 
 
 
