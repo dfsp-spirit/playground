@@ -148,6 +148,7 @@ def connectivity_analysis():
     # plots here
     coherence.singlepanelplot(channel_i='channel1', channel_j='channel2')
     #coherence.singlepanelplot(channel_i='channel2', channel_j='channel1')
+    # coherence uses trial averaging, so we cannot look at individual channels.
 
     # --- cross correlation ---
     # now we look for channel relations in time-domain, using cross corr.
@@ -155,9 +156,19 @@ def connectivity_analysis():
     # we look for 2 different trials here
     corr.singlepanelplot(channel_i=0, channel_j=1, trials=0)
     corr.singlepanelplot(channel_i=0, channel_j=1, trials=1)
-    # note that there are correlations also for longer lags.
+    # note that there are correlations also for longer lags, and that no
+    # trial averaging is done, so we can check trials.
 
     # --- Granger causality ---
+    # investigate directionality/causality between channels.
+    # uses Granger-Geweke algorithm for non-parametric Granger 
+    # causality in the spectral domain.
+    granger = spy.connectivityanalysis(data, method='granger', tapsmofrq=2)
+    # in this case, we plot both directions, of course:
+    granger.singlepanelplot(channel_i=0, channel_j=1)
+    granger.singlepanelplot(channel_i=1, channel_j=0)
+    # Granger causality also uses trial averaging, so we cannot look
+    # at individual channels.
 
 
 
