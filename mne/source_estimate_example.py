@@ -25,7 +25,7 @@ fname_stc = sample_dir / 'sample_audvis-meg'
 
 stc = read_source_estimate(fname_stc, subject='sample')
 
-do_plot = False
+do_plot = True
 
 if do_plot:
     # Define plotting parameters
