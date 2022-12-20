@@ -14,10 +14,10 @@ def aoc19(robot_prices, start_resources, start_robots, num_rounds):
     res, robots, choices = run_strategy(robot_prices, start_resources, start_robots, num_rounds)
     print(f"Num choices this iteration: {np.prod(choices)}")
 
-def strategy_random(feasible, my_robots, my_resources, robot_prices):
+def strategy_random(feasible, my_robots, my_resources, robot_prices, round_idx):
     return random.choice(feasible)
 
-def strategy_most_expensive(feasible, my_robots, my_resources, robot_prices):
+def strategy_most_expensive(feasible, my_robots, my_resources, robot_prices, round_idx):
     """very bad: may get stuck forever"""
     if len(feasible) == 1:
         assert feasible[0] == 4
@@ -27,7 +27,7 @@ def strategy_most_expensive(feasible, my_robots, my_resources, robot_prices):
             if robot_idx in feasible:
                 return robot_idx
 
-def strategy_save_for_new_kind_of_robot(feasible, my_robots, my_resources, robot_prices):
+def strategy_save_for_new_kind_of_robot(feasible, my_robots, my_resources, robot_prices, round_idx):
     """very bad: may get stuck forever"""
     if len(feasible) == 1:
         assert feasible[0] == 4
@@ -45,7 +45,7 @@ def strategy_save_for_new_kind_of_robot(feasible, my_robots, my_resources, robot
 
 # TODO: strategy to check what is needed for next robot, how much we get of it per round, and buy robots
 # that help to solve the problem asap.
-def stategy_towards_next_robot(feasible, my_robots, my_resources, robot_prices):
+def stategy_towards_next_robot(feasible, my_robots, my_resources, robot_prices, round_idx):
     if len(feasible) == 1:
         assert feasible[0] == 4
         return feasible[0]  # This is 4: wait.
@@ -78,7 +78,7 @@ def run_strategy(robot_prices, start_resources, start_robots, num_rounds, strate
         print(f"At start of round {round_idx}, we have the following resources: ore={my_resources[ore]}, clay={my_resources[clay]}, obsidian={my_resources[obsidian]}, geode={my_resources[geode]}.")
         feasible = _feasible_moves(my_resources, robot_prices)
         num_choices_per_round.append(len(feasible))
-        move = strategy(feasible, my_robots, my_resources, robot_prices)
+        move = strategy(feasible, my_robots, my_resources, robot_prices, round_idx)
         print(f"At round {round_idx}, performing move {_name_move(move)} ({len(feasible)} feasible moves: {', '.join(_name_move(f) for f in feasible)}).")
         print(f"At round {round_idx}, the following number of robots are working: ore={my_robots[ore]}, clay={my_robots[clay]}, obsidian={my_robots[obsidian]}, geode={my_robots[geode]}.")
         my_resources = _pay_for_move(my_resources, move, robot_prices)
