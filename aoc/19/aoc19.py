@@ -46,30 +46,44 @@ def strategy_save_for_new_kind_of_robot(feasible, my_robots, my_resources, robot
 # TODO: strategy to check what is needed for next robot, how much we get of it per round, and buy robots
 # that help to solve the problem asap.
 def stategy_towards_next_robot(feasible, my_robots, my_resources, robot_prices, round_idx):
+    """returns next action to take"""
     if len(feasible) == 1:
         assert feasible[0] == 4
         return feasible[0]  # This is 4: wait.
     else:
-        next_wanted_robot = None
-        for robot_idx in range(3):
-            if my_robots[robot_idx] < 1: # we have no such robot
-                next_wanted_robot = robot_idx
-                break
-        if next_wanted_robot is None:
-            print(f" * we want more robots of type {resource_names[next_wanted_robot]} because we have all types already.")
-            next_wanted_robot = 3  # get more geode robots if we have all robots.
-        if next_wanted_robot in feasible:
-            return next_wanted_robot # We can simply buy it.
-        else:
-            resources_missing = _get_missing_resources(next_wanted_robot, my_resources, robot_prices)
-            print(f" * we want robot {resource_names[next_wanted_robot]}. Missing resources: {', '.join(str(f) for f in resources_missing)} (for: {', '.join(resource_names)})")
-            resource_gain_per_round = _harvest_resources(None, my_robots, return_only_new=True)
-            print(f" * Resource gain per round: {', '.join(str(f) for f in resource_gain_per_round)}")
-            urgency = [mis / gpr for mis, gpr in zip(resources_missing, resource_gain_per_round)] # How many rounds we need with current robots to get the resource.
-            next_wanted_robot = np.argmax(urgency)
-            return next_wanted_robot
+        next_wanted_robot = _get_next_wanted_robot(my_robots)
+        return _get_best_step_towards_robot(next_wanted_robot, feasible, my_robots, my_resources, robot_prices, round_idx)
 
-def run_strategy(robot_prices, start_resources, start_robots, num_rounds, strategy=strategy_random):
+def _get_next_wanted_robot(my_robots):
+    next_wanted_robot = None
+    for robot_idx in range(3):
+        if my_robots[robot_idx] < 1: # we have no such robot
+            next_wanted_robot = robot_idx
+            break
+    if next_wanted_robot is None:
+        next_wanted_robot = 3  # get more geode robots if we have all robots.
+        print(f" * we want more robots of type {resource_names[next_wanted_robot]} because we have all types already.")
+    return next_wanted_robot
+
+def _get_best_step_towards_robot(next_wanted_robot, feasible, my_robots, my_resources, robot_prices, round_idx):
+    if next_wanted_robot in feasible:
+        return next_wanted_robot # We can simply buy it.
+    else:
+        resources_missing = _get_missing_resources(next_wanted_robot, my_resources, robot_prices)
+        print(f" * we want robot {resource_names[next_wanted_robot]}. Missing resources: {', '.join(str(f) for f in resources_missing)} (for: {', '.join(resource_names)})")
+        resource_gain_per_round = _harvest_resources(None, my_robots, return_only_new=True)
+        print(f" * Resource gain per round: {', '.join(str(f) for f in resource_gain_per_round)}")
+        urgency = [0.0, 0.0, 0.0, 0.0]
+        for idx in range(3):
+            if resource_gain_per_round[idx] == 0:  # avoid div by zero. also we cannot afford the robot without getting another one first that harvests the required resource, so do that.
+                next_wanted_robot = idx
+                return next_wanted_robot
+            else:
+                urgency[idx] = resources_missing[idx] / resource_gain_per_round[idx]
+        next_wanted_robot = np.argmax(urgency)  # Get the robot that produces the resource we need most urgently.
+        return next_wanted_robot
+
+def run_strategy(robot_prices, start_resources, start_robots, num_rounds, strategy=stategy_towards_next_robot):
     my_resources = start_resources
     my_robots = start_robots
     num_choices_per_round = []
