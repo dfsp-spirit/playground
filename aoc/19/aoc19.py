@@ -81,6 +81,8 @@ def _get_best_step_towards_robot(next_wanted_robot, feasible, my_robots, my_reso
         for idx in range(3):
             if resources_missing[idx] > 0:
                 if resource_gain_per_round[idx] == 0:  # avoid div by zero. also we cannot afford the robot without getting another one first that harvests the required resource, so do that.
+                    # in this case, we definitely need the other robot first, or we are not gonna get the resources.
+                    # (TODO: we may have already ordered one that was not delivered yet?)
                     print(f" * resource {resource_names[idx]} is missing ({resources_missing[idx]} missing) and we earn none per round. setting robot {idx} as new next wanted (was {next_wanted_robot}). ")
                     most_urgent_robot = idx
                     break
@@ -89,6 +91,11 @@ def _get_best_step_towards_robot(next_wanted_robot, feasible, my_robots, my_reso
         if most_urgent_robot is None:
             next_wanted_robot = np.argmax(urgency)  # Get the robot that produces the resource we need most urgently.
             print(f" * we earn all resources, but most urgent is: {next_wanted_robot}. getting that robot.")
+            # NOTE: this is not neccessarily the best strategy: maybe we only need to wait 1 more round
+            #       to afford the better one without buying another one first. but buying another one will
+            #       still be better in the long term (unless there are not many rounds left.)
+            #       We should compute how much waiting time we save by buying versus not buying the other robot first,
+            #       and also consider simply waiting.
         else:
             next_wanted_robot = most_urgent_robot
         if next_wanted_robot in feasible:
