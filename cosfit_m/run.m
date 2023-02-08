@@ -3,7 +3,7 @@ load("data.mat")
 
 
 data = multMUAz;
-nContrast = 6; % Num columns in data matrix.
+nContrast = size(data, 1); % Num columns in data matrix.
 
 %Cosine fitting
 cosFitParam = NaN(nContrast, 2);  % Amplitude and phase parameters to extract from the fit.
