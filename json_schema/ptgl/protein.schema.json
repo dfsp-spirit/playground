@@ -1,0 +1,43 @@
+{    
+    "$schema": "https://json-schema.org/draft/2020-12/schema",    
+    "$id": "https://example.com/product.schema.json",    
+    "title": "Protein",    
+    "description": "A protein, i.e., a biologically active macro molecule.",    
+    "type": "object",    
+    "properties": {    
+        "proteintId": {
+          "description": "The unique protein identifier from the PDB",
+          "type": "integer"
+        },
+        "proteinName": {
+          "description": "Name of the protein",
+          "type": "string"
+        },
+        "tags": {
+          "description": "Tags for the protein",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "dimensions": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "type": "number"
+            },
+            "width": {
+              "type": "number"
+            },
+            "height": {
+              "type": "number"
+            }
+          },
+          "required": [ "length", "width", "height" ]
+        }
+      },
+      "required": [ "proteinId"]
+    }
+    
