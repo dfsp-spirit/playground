@@ -72,14 +72,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>com.mycila</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <version>4.1</version>
-          <configuration>
-            <excludes>**/test/resources/subjects_dir/subject1/surf/*.*,**/test/resources/subjects_dir/subject1/mri/*.*,**/resources/.dontdelete</excludes>
-          </configuration>
-        </plugin>
-        <plugin>
           <groupId>net.revelc.code.formatter</groupId>
           <artifactId>formatter-maven-plugin</artifactId>
           <version>2.16.0</version>
@@ -188,26 +180,6 @@
       </activation>
       <build>
         <plugins>
-          <plugin>
-            <groupId>com.mycila</groupId>
-            <artifactId>license-maven-plugin</artifactId>
-            <configuration>
-              <header>etc/license.txt</header>
-              <strictCheck>true</strictCheck>
-              <aggregate>true</aggregate>
-              <excludes>
-                <exclude>LICENSE.txt</exclude>
-                <exclude>**/.dontdelete</exclude>
-              </excludes>
-            </configuration>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>check</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
           <plugin>
             <groupId>net.revelc.code.formatter</groupId>
             <artifactId>formatter-maven-plugin</artifactId>
