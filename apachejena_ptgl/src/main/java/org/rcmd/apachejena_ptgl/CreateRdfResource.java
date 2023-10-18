@@ -21,7 +21,16 @@ public class CreateRdfResource {
 
         Model model = ModelFactory.createDefaultModel();
         Resource author = CreateRdfResource.createAuthor(model);
+        
+        String authName = author.getProperty(VCARD.FN).toString();
+        System.out.println("**Author name from main: " + authName);
+
+        System.out.println("**Model Statements:");
         CreateRdfResource.printModelStatements(model);
+
+        // print the full model string
+        System.out.println("**Full Model String:");
+        model.write(System.out);
 
         System.out.println("=== Apache Jena Playground Exiting. ===");
     }
