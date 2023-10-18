@@ -17,12 +17,13 @@ public class CreateRdfResource {
 
     public static void main(String[] args) {
 
-        System.out.println("=== Apache Jena Playground ===");
+        System.out.println("=== Apache Jena Playground Startup ===");
 
         Model model = ModelFactory.createDefaultModel();
         Resource author = CreateRdfResource.createAuthor(model);
         CreateRdfResource.printStatements(model);
 
+        System.out.println("=== Apache Jena Playground Exiting. ===");
     }
 
     public static Resource createAuthor(Model model) {
