@@ -17,5 +17,5 @@ Then compile to JAR and run it:
 
 ```shell
 mvn package # build JAR file
-java -cp target/apachejena_ptgl-1.0-SNAPSHOT.jar org.rcmd.apachejena_ptgl.CreateRdfResource  # run main function in the class
+mvn exec:java -D exec.mainClass=org.rcmd.apachejena_ptgl.CreateRdfResource   # run the main function in this class
 ```
