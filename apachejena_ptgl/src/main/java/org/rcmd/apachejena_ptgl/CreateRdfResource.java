@@ -17,6 +17,8 @@ public class CreateRdfResource {
 
     public static void main(String[] args) {
 
+        System.out.println("=== Apache Jena Playground ===");
+
         Model model = ModelFactory.createDefaultModel();
         Resource author = CreateRdfResource.createAuthor(model);
         CreateRdfResource.printStatements(model);
