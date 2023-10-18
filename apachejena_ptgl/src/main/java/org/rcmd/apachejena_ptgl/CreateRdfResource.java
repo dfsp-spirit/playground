@@ -11,7 +11,9 @@ import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Statement;
 import org.apache.jena.rdf.model.StmtIterator;
+import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.vocabulary.VCARD;
+import org.apache.jena.riot.Lang;
 
 public class CreateRdfResource {
 
@@ -28,9 +30,17 @@ public class CreateRdfResource {
         System.out.println("**Model Statements:");
         CreateRdfResource.printModelStatements(model);
 
-        // print the full model string
-        System.out.println("**Full Model String:");
+        // print the full model string using default writer (rather dumb but fast, does NOT preserver blank nodes)
+        System.out.println("**Full Model String (default writer):");
         model.write(System.out);
+
+        // now write the model in a pretty form (but slow for very large models, preserves blank nodes)
+        System.out.println("**Full Model String (pretty writer):");
+        RDFDataMgr.write(System.out, model, Lang.RDFXML);
+
+        // now write the model in N-triples format (fast, preserves blank nodes)
+        System.out.println("**Full Model String (NTRIPLES):");
+        RDFDataMgr.write(System.out, model, Lang.NTRIPLES);
 
         System.out.println("=== Apache Jena Playground Exiting. ===");
     }
