@@ -21,7 +21,7 @@ public class CreateRdfResource {
 
         Model model = ModelFactory.createDefaultModel();
         Resource author = CreateRdfResource.createAuthor(model);
-        CreateRdfResource.printStatements(model);
+        CreateRdfResource.printModelStatements(model);
 
         System.out.println("=== Apache Jena Playground Exiting. ===");
     }
@@ -29,18 +29,22 @@ public class CreateRdfResource {
     public static Resource createAuthor(Model model) {
         // some definitions
         final String personURI = "http://somewhere/JohnSmith";
-        final String fullName = "John Smith";
+        final String givenName = "John";
+        final String familyName = "Smith";
+        final String fullName = givenName + " " + familyName;
 
         // create the resource
         Resource johnSmith = model.createResource(personURI);
 
         // add the property
         johnSmith.addProperty(VCARD.FN, fullName);
+        johnSmith.addProperty(VCARD.Given, givenName);
+        johnSmith.addProperty(VCARD.Family, familyName);
 
         return johnSmith;
     }
 
-    public static void printStatements(Model model) {
+    public static void printModelStatements(Model model) {
         // list the statements in the Model
         StmtIterator iter = model.listStatements();
 
