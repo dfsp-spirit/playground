@@ -19,7 +19,7 @@ public class CreateRdfResource {
 
         Model model = ModelFactory.createDefaultModel();
         Resource author = CreateRdfResource.createAuthor(model);
-        CreateRdfResource.printStatements(null);
+        CreateRdfResource.printStatements(model);
 
     }
 
