@@ -1,6 +1,8 @@
 
 package org.rcmd.apachejena_ptgl;
 
+import java.io.InputStream;
+
 /**
  * This roughly follows the Apache Jena RDF API tutorial, see https://jena.apache.org/tutorials/rdf_api.html
  */
@@ -41,6 +43,10 @@ public class CreateRdfResource {
         // now write the model in N-triples format (fast, preserves blank nodes)
         System.out.println("**Full Model String (NTRIPLES):");
         RDFDataMgr.write(System.out, model, Lang.NTRIPLES);
+
+        // Read a model file on disk
+        Model myVcard = readModelFile("foaf.rdf", "http://example.org/test23/");
+        RDFDataMgr.write(System.out, myVcard, Lang.NTRIPLES);
 
         System.out.println("=== Apache Jena Playground Exiting. ===");
     }
@@ -86,6 +92,28 @@ public class CreateRdfResource {
 
             System.out.println(" .");
         }
+    }
+
+    /**
+     * 
+     * @param inputFileName
+     * @param localUrlPrefix Prefix added to local URLs. Can be NULL if and only if there are no local URLs in the document.
+     * @return
+     */
+    public static Model readModelFile(String inputFileName, String localUrlPrefix) {
+        // create an empty model
+        Model model = ModelFactory.createDefaultModel();
+
+        // use the RDFDataMgr to find the input file
+        InputStream in = RDFDataMgr.open( inputFileName );
+        if (in == null) {
+            throw new IllegalArgumentException("File: " + inputFileName + " not found");
+        }
+
+        // read the RDF/XML file
+        model.read(in, localUrlPrefix);
+
+        return model;    
     }
 
 }
