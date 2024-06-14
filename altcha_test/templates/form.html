@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Form with AltCHA</title>
+    <script async defer src="/static/altcha.js" type="module"></script>
+</head>
+<body>
+    <h2>Login Form</h2>
+    <form action="/submit_form" method="post">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <altcha-widget challengeurl="/altcha_challenge"></altcha-widget>
+        <div>
+            <button type="submit">Login</button>
+        </div>
+    </form>
+</body>
+</html>
+
