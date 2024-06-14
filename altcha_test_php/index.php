@@ -34,6 +34,12 @@ $app->get('/altcha_challenge', function ($request, $response, $args) {
 
 $app->post('/submit_form', function (Request $request, Response $response, $args) {
     global $my_altcha;
+
+    $body = $request->getBody();
+    parse_str($body, $params);
+    print("params: ");
+    print_r($params);
+
     $parsedBody = $request->getParsedBody();
     $name = $parsedBody['name'] ?? null;
     $password = $parsedBody['password'] ?? null;
