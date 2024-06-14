@@ -41,7 +41,7 @@ public class CreateRdfResource {
         RDFDataMgr.write(System.out, model, Lang.RDFXML);
 
         // now write the model in N-triples format (fast, preserves blank nodes)
-        System.out.println("**Full Model String (NTRIPLES):");
+        System.out.println("**Full Model String (in NTRIPLES format):");
         RDFDataMgr.write(System.out, model, Lang.NTRIPLES);
 
         // Read a model file on disk
