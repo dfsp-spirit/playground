@@ -18,13 +18,9 @@ $secret_key = "bananeinderbirne";
 $my_altcha = new Altcha($algo, $secret_key, 1, 100);
 
 
-// Define your API routes
-$app->get('/hello/{name}', function ($request, $response, $args) {
-    $name = $args['name'];
-    $response->getBody()->write("Hello, $name");
-    return $response;
-});
+// ---- API routes -----
 
+// Endpoint where a client can request an Altcha challenge.
 $app->get('/altcha_challenge', function ($request, $response, $args) {
     global $my_altcha;
     $challenge = $my_altcha->createChallenge();
@@ -32,6 +28,11 @@ $app->get('/altcha_challenge', function ($request, $response, $args) {
     return $response;
 });
 
+
+// Form submission handler. This gets called when the user hits the Submit button on
+// the `form.html` page.
+// It checks whether the form data is complete (required fields filled out), and
+// whether the returned Altcha response is valid. It does not check for or protect against replay attacks.
 $app->post('/submit_form', function (Request $request, Response $response, $args) {
     global $my_altcha;
 
@@ -47,9 +48,9 @@ $app->post('/submit_form', function (Request $request, Response $response, $args
 
 
     // Process the form data (e.g., validate, store in database, etc.)
-    $status = "error";
+    $form_filled_status = "error";  // this status describes whether all required form fields were filled out.
     if ($name && $password) {
-        $status = "okay";
+        $form_filled_status = "okay";
 
         $data = [
             'name' => $name,
@@ -61,15 +62,22 @@ $app->post('/submit_form', function (Request $request, Response $response, $args
 
         if ($my_altcha->validPayload($altcha_raw)) {
             $altcha_status = "valid";
+            $enc_data =  json_encode($data);
+            $response->getBody()->write("{ \"form_filled_status\": \"$form_filled_status\", \"altcha_status\": \"$altcha_status\", \"data\": $enc_data, \"altcha_raw\": \"$altcha_raw\", \"altcha\": $altcha_json }");  // Don't roll your own JSON, they told us in school.
+        } else {
+            $error = [
+                'form_filled_status' => $form_filled_status,
+                'altcha_status' => $altcha_status,
+                'error_message' => 'Altcha captcha response invalid.',
+            ];
+            $response->getBody()->write(json_encode($error));
+            return $response->withStatus(400); // Bad Request
         }
 
-        $enc_data =  json_encode($data);
-
-        $response->getBody()->write("{ \"status\": \"$status\", \"altcha_status\": \"$altcha_status\", \"data\": $enc_data, \"altcha_raw\": \"$altcha_raw\", \"altcha\": $altcha_json }");
     } else {
         // If form data is missing
         $error = [
-            'status' => $status,
+            'form_filled_status' => $form_filled_status,
             'error_message' => 'Name and password are required.',
         ];
         $response->getBody()->write(json_encode($error));
