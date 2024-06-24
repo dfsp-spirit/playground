@@ -39,7 +39,6 @@ $app->post('/submit_form', function (Request $request, Response $response, $args
     $body = $request->getBody();
     parse_str($body, $params);
 
-    //$parsedBody = $request->getParsedBody();
     $name = $params['username'] ?? null;
     $password = $params['password'] ?? null;
     $altcha_raw = $params['altcha'] ?? null; // still base64 encoded.
@@ -63,7 +62,7 @@ $app->post('/submit_form', function (Request $request, Response $response, $args
         if ($my_altcha->validPayload($altcha_raw)) {
             $altcha_status = "valid";
             $enc_data =  json_encode($data);
-            $response->getBody()->write("{ \"form_filled_status\": \"$form_filled_status\", \"altcha_status\": \"$altcha_status\", \"data\": $enc_data, \"altcha_raw\": \"$altcha_raw\", \"altcha\": $altcha_json }");  // Don't roll your own JSON, they told us in school.
+            $response->getBody()->write("{ \"form_filled_status\": \"$form_filled_status\", \"altcha_status\": \"$altcha_status\", \"data\": $enc_data, \"altcha_raw\": \"$altcha_raw\", \"altcha\": $altcha_json }");  // Never roll your own JSON, they told us.
         } else {
             $error = [
                 'form_filled_status' => $form_filled_status,
