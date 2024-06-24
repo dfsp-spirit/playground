@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'f4a82c6c53785b2995bd40aa6eee982e64d9ec5d',
+        'reference' => 'e118bd319c756390cbd0ca245f76ed253262a99f',
         'name' => 'ts/altcha_test_php',
         'dev' => true,
     ),
@@ -154,7 +154,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'f4a82c6c53785b2995bd40aa6eee982e64d9ec5d',
+            'reference' => 'e118bd319c756390cbd0ca245f76ed253262a99f',
             'dev_requirement' => false,
         ),
         'tuupola/callable-handler' => array(
