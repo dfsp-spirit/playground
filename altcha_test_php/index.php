@@ -35,15 +35,8 @@ $app->get('/altcha_challenge', function ($request, $response, $args) {
 $app->post('/submit_form', function (Request $request, Response $response, $args) {
     global $my_altcha;
 
-    $do_print = false;
-
     $body = $request->getBody();
     parse_str($body, $params);
-
-    if($do_print) {
-        print("params: ");
-        print_r($params);
-    }
 
     //$parsedBody = $request->getParsedBody();
     $name = $params['username'] ?? null;
@@ -51,7 +44,6 @@ $app->post('/submit_form', function (Request $request, Response $response, $args
     $altcha_raw = $params['altcha'] ?? null; // still base64 encoded.
     $altcha_json = base64_decode($altcha_raw);  // decoded altcha as JSON
     $altcha_str = json_decode($altcha_json, true);  // decoded altcha as string
-
 
 
     // Process the form data (e.g., validate, store in database, etc.)
@@ -66,16 +58,9 @@ $app->post('/submit_form', function (Request $request, Response $response, $args
 
         $altcha_status = "invalid";
         // For example, just echoing the data back as JSON
-        if($do_print) {
-            print("Form data complete: status=$status, name=$name, password=$password\n");
-        }
 
         if ($my_altcha->validPayload($altcha_raw)) {
             $altcha_status = "valid";
-        }
-
-        if($do_print) {
-            print("altcha_status : $altcha_status\n");
         }
 
         $enc_data =  json_encode($data);
@@ -83,9 +68,6 @@ $app->post('/submit_form', function (Request $request, Response $response, $args
         $response->getBody()->write("{ \"status\": \"$status\", \"altcha_status\": \"$altcha_status\", \"data\": $enc_data, \"altcha_raw\": \"$altcha_raw\", \"altcha\": $altcha_json }");
     } else {
         // If form data is missing
-        if($do_print) {
-            print("Form data incomplete: status=$status, name=$name, password=$password.\n");
-        }
         $error = [
             'status' => $status,
             'error_message' => 'Name and password are required.',
