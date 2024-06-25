@@ -34,7 +34,7 @@ $challenge = $my_altcha->createChallenge($salt, $number);
 assert($challenge["algorithm"] == "sha-256", "Expected algo sha-256.");
 $num_asserts_okay++;
 
-$client_response = $challenge;
+$client_response = $challenge; // You would get the response from the client, submitted with the form contents.
 $client_response["number"] = $number;
 $encoded_response = base64_encode(json_encode($client_response));
 
