@@ -1,4 +1,13 @@
 
+# altcha-test-php
+
+## About
+
+This is a fully working demonstration of using Altcha in a web application with a PHP backend.
+It provides its own endpoint where clients can request a challenge, and has a server-side function to validate the challenge response computed by the client. This means it does NOT
+require an Altcha API key.
+
+
 ## Installation
 
 Make sure you have `php` and `composer` installed, e.g. via apt: ```sudo apt install composer php```.
