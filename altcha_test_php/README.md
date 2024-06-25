@@ -7,6 +7,8 @@ This is a fully working demonstration of using Altcha in a web application with 
 It provides its own endpoint where clients can request a challenge, and has a server-side function to validate the challenge response computed by the client. This means it does NOT
 require an Altcha API key.
 
+The altcha stuff happens in [altcha.php](./altcha.php), the frontend is in [form.html](./form.html), and the backend in [index.php](./index.php).
+
 
 ## Installation
 
@@ -43,5 +45,10 @@ When you click the *Submit* button in the form, you will be taken to the `form_s
 
 ## Tests
 
-Run ```php unittest.php``` for tests.
+The tests are in [unittest.php](./unittest.php). To run them:
+
+```sh
+php unittest.php
+```
+
 
