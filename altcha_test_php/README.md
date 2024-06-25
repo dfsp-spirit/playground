@@ -15,12 +15,14 @@ Make sure you have `php` and `composer` installed, e.g. via apt: ```sudo apt ins
 Then, in this directory:
 
 ```sh
+git clone https://github.com/dfsp-spirit/playground.git
+cd playground/altcha_test_php/
 composer install
 ```
 
 to install deps.
 
-Note on the PHP version: *This was tested with PHP 8.1.2, which is the version that ships with Ubuntu 22.04 LTS. If you have a different PHP version, the package versions in composer.lock may not work for you. In that case, you can delete `composer.lock` and then run ```composer install```.*
+Note on the PHP version: *This was tested with PHP 8.1.2, which is the version that ships with Ubuntu 22.04 LTS. If you have a different PHP version, the package versions in the `composer.lock` file may not work for you. In that case, you can delete `composer.lock` and then run ```composer install```.*
 
 
 ## Usage
