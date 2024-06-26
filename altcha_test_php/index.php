@@ -13,7 +13,7 @@ $app = AppFactory::create();
 require __DIR__ . '/cors.php';
 require __DIR__ . '/altcha.php';
 
-$algo = "SHA-256";
+$algo = "sha-256";
 $secret_key = "bananeinderbirne";
 $my_altcha = new Altcha($algo, $secret_key, 1, 100);
 
