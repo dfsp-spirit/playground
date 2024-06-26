@@ -25,13 +25,19 @@ $algo = "SHA-256";
 $secret_key = "bananeinderbirne";
 $my_altcha = new Altcha($algo, $secret_key, 1, 100);
 
-$salt = bin2hex(random_bytes(12));
+$salt = "7ad13678cadcea5e568b104a";
 $number = 17; # the solution, this is what the JS client needs to compute als POW.
 $challenge = $my_altcha->createChallenge($salt, $number);
 
 
 
-assert($challenge["algorithm"] == "sha-256", "Expected algo sha-256.");
+if ($challenge["algorithm"] != "SHA-256") { throw new Exception("Invalid algorithm " . $challenge['algorithm'] . "."); }
+$num_asserts_okay++;
+if ($challenge["salt"] != $salt) { throw new Exception("Invalid salt " . $challenge['salt'] . "."); }
+$num_asserts_okay++;
+if ($challenge["challenge"] != "88bc1d7c2f91e30eb1b4992030a22858b6ccad51c8047abab1ed8648aa8a0dd2") { throw new Exception("Invalid challenge " . $challenge['challenge'] . "."); }
+$num_asserts_okay++;
+if ($challenge["signature"] != "48a60ba70fa7560d83b8173a694c9f74728e551ca8fd40e22688e20817108c34") { throw new Exception("Invalid signature " . $challenge['signature'] . "."); }
 $num_asserts_okay++;
 
 $client_response = $challenge; // You would get the response from the client, submitted with the form contents.
@@ -40,7 +46,7 @@ $encoded_response = base64_encode(json_encode($client_response));
 
 $is_valid = $my_altcha->validPayload($encoded_response);
 
-assert($is_valid == true, "Expected valid payload.");
+if ($is_valid != true) { throw new Exception("Expected valid payload."); }
 $num_asserts_okay++;
 
 print("All okay, $num_asserts_okay checks passed.\n");
