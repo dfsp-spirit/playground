@@ -1,0 +1,22 @@
+{
+    "name": "ts/altcha_test_php",
+    "type": "project",
+    "require": {
+        "slim/slim": "^4.14",
+        "tuupola/cors-middleware": "^1.4",
+        "nyholm/psr7-server": "^1.1",
+        "slim/psr7": "^1.7"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Ts\\AltchaTestPhp\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tim Schaefer",
+            "email": "ts+code@rcmd.org"
+        }
+    ]
+}
