@@ -18,7 +18,7 @@ $algo = "sha-256";
 //$secret_key = "bananeinderbirne";  // development only
 $secret_key = getenv("ALTCHA_SERVER_KEY", true);  // production.
 
-$my_altcha = new Altcha($algo, $secret_key, 1, 100);
+$my_altcha = new Altcha($algo, $secret_key, 1, 10000);
 
 
 // ---- API routes -----
@@ -26,6 +26,15 @@ $my_altcha = new Altcha($algo, $secret_key, 1, 100);
 // Endpoint where a client can request an Altcha challenge.
 // Just fire a HTTP GET request. The challenge is served as a JSON object with fields 'algorithm', 'salt', 'challenge', and 'signature'.
 $app->get('/altcha_challenge', function ($request, $response, $args) {
+
+    if(empty($secret_key)) {
+        $error = [
+            'error_message' => 'No secret key configured on server. Please set ALTCHA_SERVER_KEY.',
+        ];
+        $response->getBody()->write(json_encode($error));
+        return $response->withStatus(500); // Internal server error.
+    }
+
     global $my_altcha;
     $challenge = $my_altcha->createChallenge();
     $response->getBody()->write(json_encode($challenge));
@@ -53,6 +62,15 @@ $app->get('/altcha_validate', function ($request, $response, $args) {
         $response->getBody()->write(json_encode($error));
         return $response->withStatus(400); // Bad Request
     }
+
+    if(empty($secret_key)) {
+        $error = [
+            'error_message' => 'No secret key configured on server. Please set ALTCHA_SERVER_KEY.',
+        ];
+        $response->getBody()->write(json_encode($error));
+        return $response->withStatus(500); // Internal server error.
+    }
+
 
     // Handle potentially valid requests.
     $altcha_json = base64_decode($altcha_raw);

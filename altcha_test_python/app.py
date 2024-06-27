@@ -17,7 +17,7 @@ import hmac
 from enum import Enum
 import time
 import sys
-
+import argparse
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -28,9 +28,9 @@ logger.addHandler(sh)
 
 
 class Algo(Enum):
-    SHA256 = "SHA-256"  # These strings need to match the ones used by the altcha web client JS library.
-    SHA512 = "SHA-512"
-    SHA384 = "SHA-384"
+    SHA256 = "sha-256"  # These strings need to match the ones used by the altcha web client JS library.
+    SHA512 = "sha-512"
+    SHA384 = "sha-384"
 
 
 std_encoding : str = "ascii" #"utf-8"
@@ -203,6 +203,23 @@ def altcha_challenge():
     #challenge = generator.create_challenge()
     return jsonify(hardcoded_challenge)
 
+
+def test_altcha_creation():
+    num_asserts_okay = 0
+    altcha = Altcha(secret_key="bananeinderbirne")
+    salt = "6b5cabdfb473dc7fa1468f21"
+    secret_number = 17
+    challenge = altcha.createChallenge(salt=salt, secret_number=secret_number)
+
+    assert challenge["salt"] == salt, "Invalid salt."
+    num_asserts_okay += 1
+
+    assert challenge["algorithm"] == "sha-256", f"Invalid algo {challenge['algorithm']}, expected sha-256."
+    num_asserts_okay += 1
+
+    print(f"Tests okay, {num_asserts_okay} asserts passed.")
+
+
 @app.route('/submit_form', methods=['POST'])
 def submit_form():
     form_data = request.form.to_dict()
@@ -218,5 +235,13 @@ def submit_form():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))
+    parser = argparse.ArgumentParser(description='Altcha demo app with Python')
+    parser.add_argument('--test', action='store_true', help='Run unit test.')
+    args = parser.parse_args()
+    if args.test:
+        print(f"Running test...")
+        test_altcha_creation()
+    else:
+        print(f"Running flask web app...")
+        app.run(host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))
 
