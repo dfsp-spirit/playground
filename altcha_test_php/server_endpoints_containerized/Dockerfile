@@ -3,8 +3,13 @@
 # To build and run the Docker image from this Docker file, do:
 #
 #    docker build -t altchaendpoints .
-#    docker run -it -p 80:80 -p 443:443 --rm --name my-altchaendpoints altchaendpoints
+#    docker run -it --rm --name my-altchaendpoints altchaendpoints
 #
+#  or using docker compose:
+#
+#    docker compose up -d --wait
+#
+
 
 FROM dunglas/frankenphp
 RUN apt-get update && \
@@ -13,19 +18,19 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/*
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ENV SERVER_NAME=altcha.webapps.nfdi4earth.de
-# If you want to disable HTTPS, use this value instead:
-#ENV SERVER_NAME=:80
+#ENV SERVER_NAME=altcha.webapps.nfdi4earth.de
+# If you want to disable HTTPS, use this value instead: ENV SERVER_NAME=:80
+ENV SERVER_NAME=:80
 
 # Enable PHP production settings
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-# Replace with a secret. Do not put the real one into your version control system.
+# Replace with a secret. (Do not put the real one into your version control system, especially not if the code is public.)
 ENV ALTCHA_SERVER_KEY=bananeinderbirne
-
 
 COPY . /app/
 
+# Run composer as user
 ARG USER=www-data
 
 RUN \
@@ -43,3 +48,5 @@ USER ${USER}
 
 
 RUN composer install
+
+CMD ./frankenphp php-cli /path/to/your/script.php && tail -F /var/log/mysql/error.log
